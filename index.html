@@ -1,59 +1,52 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scam Check — V2</title>
-<style>
-:root{--blue:#1769e8;--ink:#0c1b33;--muted:#667085;--line:#e4e7ec;--bg:#f6f8fb;--red:#d92d20;--amber:#dc6803;--green:#079455}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:white;border-bottom:1px solid var(--line);padding:18px 22px}.brand{max-width:880px;margin:auto;font-weight:900;font-size:24px}.brand span{color:var(--blue)}
-main{max-width:880px;margin:42px auto;padding:0 18px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 10px 30px rgba(16,24,40,.06)}
-h1{font-size:clamp(34px,6vw,56px);line-height:1.02;margin:0 0 14px}.blue{color:var(--blue)}.lead{font-size:19px;color:#475467;line-height:1.5;max-width:720px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 14px}.tab{border:1px solid var(--line);background:#f9fafb;border-radius:10px;padding:10px 13px;font-weight:700}.tab.active{background:#eaf2ff;color:#175cd3;border-color:#b2ccff}
-textarea{width:100%;min-height:230px;border:1px solid #cfd5df;border-radius:14px;padding:17px;font:inherit;font-size:16px;resize:vertical;outline:none}textarea:focus{border-color:#84adff;box-shadow:0 0 0 4px #eff4ff}
-button{width:100%;margin-top:14px;border:0;border-radius:13px;background:var(--blue);color:#fff;padding:17px;font-weight:900;font-size:18px;cursor:pointer}button:hover{filter:brightness(.96)}
-.note{text-align:center;color:var(--muted);font-size:14px;margin:14px 0 0}.features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}.feature{background:#f9fafb;border-radius:14px;padding:14px;text-align:center;font-size:14px;font-weight:700}.important{margin-top:20px;background:#f2f4f7;border-radius:14px;padding:16px;color:#475467}
-#result{display:none}.back{background:none;color:var(--blue);width:auto;padding:0;margin:0 0 18px;font-size:15px}.risk{border-radius:16px;padding:22px;margin-bottom:20px}.risk h2{font-size:36px;margin:3px 0}.risk small{font-weight:800;letter-spacing:.08em}.risk.high{background:#fff1f0;color:var(--red)}.risk.suspicious{background:#fff6ed;color:var(--amber)}.risk.unclear{background:#fffaeb;color:#b54708}.risk.low{background:#ecfdf3;color:var(--green)}
-.section{border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}.section h3{margin:0 0 12px}.section li{margin:9px 0;line-height:1.45}.sample{background:#f9fafb;padding:14px;border-radius:10px;white-space:pre-wrap;word-break:break-word}.disclaimer{font-size:13px;color:var(--muted);margin-top:18px;line-height:1.45}
-@media(max-width:650px){main{margin:22px auto}.card{padding:20px}.features{grid-template-columns:1fr 1fr}h1{font-size:40px}}
-</style>
-</head><body>
-<header><div class="brand">🛡️ SCAM <span>CHECK</span></div></header>
-<main>
-<section id="checker" class="card">
-<h1>Not sure if it’s a scam?<br><span class="blue">Check it before you act.</span></h1>
-<p class="lead">Paste a suspicious text message, email, social-media message or website link and get a clear risk assessment, reasons and next steps.</p>
-<div class="tabs"><div class="tab active">Text / Message</div><div class="tab">Email</div><div class="tab">Link</div><div class="tab">Social Media</div></div>
-<textarea id="input" placeholder="Paste the suspicious message, email or website link here…"></textarea>
-<button id="check">🔎 CHECK FOR SCAM</button>
-<p class="note">🔒 Scam Check explains warning signs clearly. Never enter passwords, PINs or verification codes.</p>
-<div class="features"><div class="feature">🛡️ Multiple warning signs</div><div class="feature">🔗 Link patterns</div><div class="feature">📄 Plain-English reasons</div><div class="feature">✅ Next steps</div></div>
-<div class="important"><strong>Important:</strong> A low-risk result does not guarantee something is safe. Verify independently before sending money or personal information.</div>
-</section>
-<section id="result" class="card">
-<button class="back" id="back">← Check another message</button>
-<div id="riskbox" class="risk"><small>RISK LEVEL</small><h2 id="riskTitle"></h2><strong id="riskSub"></strong></div>
-<div class="section"><h3>The message you checked</h3><div class="sample" id="sample"></div></div>
-<div class="section"><h3>Why we flagged it</h3><ul id="reasons"></ul></div>
-<div class="section"><h3>What you should do</h3><ol id="actions"></ol></div>
-<p class="disclaimer"><strong>Safety note:</strong> Scam Check can help identify warning signs, but no automated check can guarantee that a message or website is safe. Verify important requests independently.</p>
-</section>
-</main>
 <script>
-const input=document.getElementById('input'), checker=document.getElementById('checker'), result=document.getElementById('result');
-const riskbox=document.getElementById('riskbox'), riskTitle=document.getElementById('riskTitle'), riskSub=document.getElementById('riskSub'), reasons=document.getElementById('reasons'), actions=document.getElementById('actions'), sample=document.getElementById('sample');
-const patterns=[
- [/https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|xyz|top|click|info|co|nz)\b/i,'Contains a website link that should be independently verified.',2],
- [/urgent|immediately|act now|today only|within \d+ (hours|minutes)|final warning/i,'Uses urgency or pressure to make you act quickly.',2],
- [/password|pin|verification code|one[- ]time code|otp|login details/i,'Requests or references sensitive account credentials.',3],
- [/bank transfer|crypto|bitcoin|gift card|wire transfer|payment|pay a fee|deposit/i,'Requests money or a payment method commonly used in scams.',3],
- [/prize|winner|won|lottery|inheritance|refund/i,'Promises unexpected money, prizes or a refund.',2],
- [/parcel|delivery|courier|nz post|customs|toll/i,'Uses delivery, courier or fee language often seen in impersonation scams.',1],
- [/click (the|this) link|verify your account|confirm your details|account.*suspend/i,'Pushes you to click or verify account information.',3],
- [/dear customer|dear user|valued customer/i,'Uses a generic greeting instead of identifying you personally.',1]
-];
-function analyze(text){let score=0, hits=[];patterns.forEach(([rx,msg,w])=>{if(rx.test(text)){score+=w;hits.push(msg)}});let level='unclear',title='UNCLEAR',sub='Not enough evidence for a confident result.';if(score>=7){level='high';title='HIGH RISK';sub='Several strong scam indicators were detected.'}else if(score>=4){level='suspicious';title='SUSPICIOUS';sub='Multiple warning signs were detected.'}else if(score===0 && text.length>40){level='low';title='LOW RISK';sub='No common warning signs were detected by this prototype.'}if(!hits.length) hits.push('No common rule-based scam patterns were detected. That does not prove the message is legitimate.');return {level,title,sub,hits}}
-document.getElementById('check').onclick=()=>{let text=input.value.trim();if(!text){input.focus();return}let r=analyze(text);riskbox.className='risk '+r.level;riskTitle.textContent=r.title;riskSub.textContent=r.sub;sample.textContent=text;reasons.innerHTML=r.hits.map(x=>`<li>${x}</li>`).join('');actions.innerHTML='<li>Do not send money, passwords, PINs or verification codes based only on this message.</li><li>If it claims to be from an organisation, contact that organisation using contact details you find independently.</li><li>Do not open suspicious links; go directly to the official website or app instead.</li><li>If money or account details may already be compromised, contact your bank or relevant provider promptly.</li>';checker.style.display='none';result.style.display='block';window.scrollTo({top:0,behavior:'smooth'})};
-document.getElementById('back').onclick=()=>{result.style.display='none';checker.style.display='block'};
+const input = document.querySelector("textarea");
+const checkButton = document.getElementById("check");
+const result = document.getElementById("result");
+
+checkButton.onclick = async () => {
+  const text = input.value.trim();
+
+  if (!text) {
+    result.innerHTML = "<strong>Please enter a message, email or website link to check.</strong>";
+    return;
+  }
+
+  checkButton.disabled = true;
+  checkButton.textContent = "Checking...";
+
+  try {
+    const response = await fetch("/api/check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to check this content.");
+    }
+
+    const reasons = data.reasons.length
+      ? "<ul>" + data.reasons.map(reason => `<li>${reason}</li>`).join("") + "</ul>"
+      : "<p>No obvious warning signs detected.</p>";
+
+    result.innerHTML = `
+      <h3>Risk level: ${data.riskLevel}</h3>
+      ${reasons}
+      <p>${data.message}</p>
+    `;
+  } catch (error) {
+    result.innerHTML = `
+      <strong>We couldn't complete the check.</strong>
+      <p>Please try again.</p>
+    `;
+  } finally {
+    checkButton.disabled = false;
+    checkButton.textContent = "Check for Scam";
+  }
+};
 </script>
 </body></html>
