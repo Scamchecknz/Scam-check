@@ -24,7 +24,7 @@ app.post("/api/check", async (req, res) => {
       error: "Message is too long (maximum 10,000 characters)."
     });
   }
-
+console.log("API key detected:", Boolean(process.env.OPENAI_API_KEY));
   if (!process.env.OPENAI_API_KEY) {
     return res.status(503).json({
       error: "AI checking is not configured yet."
