@@ -104,7 +104,8 @@ no warning signs were detected.
     }
 
     if (!response.ok) {
-      console.error("OpenAI request failed", response.status);
+      const errorBody = await response.text();
+      console.error("OpenAI request failed", response.status, errorBody);
 
       return res.status(502).json({
         error: "AI checking is temporarily unavailable."
