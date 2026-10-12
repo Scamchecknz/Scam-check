@@ -95,7 +95,7 @@ to claim it should be considered suspicious.
 Never assume a message is safe simply because
 no warning signs were detected.
 `,
-            input: text.trim()
+            input: `Return the scam analysis as valid JSON.\n\n${text.trim()}`,
           })
         }
       );
