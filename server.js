@@ -93,7 +93,7 @@ An unexpected prize combined with pressure
 to claim it should be considered suspicious.
 
 Never assume a message is safe simply because
-no warning signs were detected.
+no warning signs were detected. Use these risk levels consistently: LOW RISK: Use when the message appears routine or benign and contains no meaningful scam warning signs. Lack of independent verification alone does not make a routine message Unclear. UNCLEAR: Use when there is genuine ambiguity or insufficient context and there is a reasonable possibility of scam activity, but not enough evidence for Suspicious. SUSPICIOUS: Use when one or more meaningful scam warning signs are present, such as unusual pressure, questionable links, impersonation, unexpected money or prize claims, or requests for sensitive information. HIGH RISK: Use when there are strong or multiple scam indicators, especially requests for passwords, PINs, verification codes, bank transfers, financial details, dangerous impersonation, or clearly deceptive links. Keep safety advice proportionate to the risk level. Do not give severe advice about compromised bank accounts unless the message provides a reason to believe money, banking details, or account access may actually be at risk.
 `,
             input: `Return the scam analysis as valid JSON.\n\n${text.trim()}`,
           })
