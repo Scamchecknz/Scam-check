@@ -76,7 +76,7 @@ Low Risk, Unclear, Suspicious, High Risk.
 reasons must be an array of up to four
 short explanations.
 
-message must provide practical safety advice.
+message must provide practical safety advice. Tailor the safety advice to the risk level and the specific warning signs found. For low risk messages, keep the advice brief and reassuring, and do not include unnecessary warnings about banking compromise or contacting a bank.
 
 Look for:
 - Unexpected prizes or money
