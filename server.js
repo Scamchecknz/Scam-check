@@ -105,7 +105,7 @@ no warning signs were detected. Use these risk levels consistently: LOW RISK: Us
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("OpenAI request failed", response.status, errorBody);
+      console.error("OpenAI request failed", response.status);
 
       return res.status(502).json({
         error: "AI checking is temporarily unavailable."
