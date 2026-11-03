@@ -189,6 +189,8 @@ app.get("/api/check/diagnostic", (req, res) => {
   res.json({
     recognisedAddress: req.ip,
     proxyAddresses: req.ips,
+    forwardedFor: req.get("x-forwarded-for") || null,
+    socketAddress: req.socket.remoteAddress,
     remaining: req.rateLimit?.remaining,
     instance: process.env.RENDER_INSTANCE_ID || String(process.pid)
   });
