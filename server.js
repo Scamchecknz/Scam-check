@@ -10,6 +10,21 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+import { rateLimit } from "express-rate-limit";
+// Start with one trusted proxy hop; verify after deployment.
+app.set("trust proxy", 1);
+
+const checkLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    error: "Too many checks. Please try again in 15 minutes."
+  }
+});
+
+app.use("/api/check", checkLimiter);
 app.post("/api/check", async (req, res) => {
   const { text } = req.body || {};
 
