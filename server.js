@@ -183,7 +183,16 @@ no warning signs were detected. Use these risk levels consistently: LOW RISK: Us
     });
   }
 });
-
+// Temporary diagnostic route. Remove after testing.
+app.get("/api/check/diagnostic", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json({
+    recognisedAddress: req.ip,
+    proxyAddresses: req.ips,
+    remaining: req.rateLimit?.remaining,
+    instance: process.env.RENDER_INSTANCE_ID || String(process.pid)
+  });
+});
 app.listen(PORT, () => {
   console.log(`Scam Check NZ running on port ${PORT}`);
 });
