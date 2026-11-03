@@ -12,7 +12,7 @@ app.get("/health", (req, res) => {
 
 import { rateLimit } from "express-rate-limit";
 // Start with one trusted proxy hop; verify after deployment.
-app.set("trust proxy", 1);
+app.set("trust proxy", 3);
 
 const checkLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
